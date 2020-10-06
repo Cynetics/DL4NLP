@@ -1,0 +1,13 @@
+python3.8 train.py --hidden_dim 512 --batch_size 1024 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 16
+
+python3.8 train.py --hidden_dim 512 --batch_size 2048 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 16
+
+python3.8 train.py --hidden_dim 512 --batch_size 4096 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 16
+
+python3.8 train.py --hidden_dim 512 --batch_size 1024 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 30
+
+python3.8 train.py --hidden_dim 512 --batch_size 2048 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 30
+
+python3.8 train.py --hidden_dim 512 --batch_size 4096 --input bytes --input_dim 20000 --data_path "./data/wili-2018/x_bytes_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_bytes_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 30
+
+

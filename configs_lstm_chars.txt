@@ -1,0 +1,19 @@
+python3.8 train.py --hidden_dim 768 --batch_size 1024 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 32
+
+python3.8 train.py --hidden_dim 768 --batch_size 2048 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 32
+
+python3.8 train.py --hidden_dim 768 --batch_size 4096 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 32
+
+python3.8 train.py --hidden_dim 768 --batch_size 1024 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 48
+
+python3.8 train.py --hidden_dim 768 --batch_size 2048 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 48
+
+python3.8 train.py --hidden_dim 768 --batch_size 4096 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 48
+
+python3.8 train.py --hidden_dim 768 --batch_size 1024 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 64
+
+python3.8 train.py --hidden_dim 768 --batch_size 2048 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 64
+
+python3.8 train.py --hidden_dim 768 --batch_size 4096 --input chars --input_dim 12300 --data_path "./data/wili-2018/x_train_sub_clean.txt" --label_path "./data/wili-2018/y_train_sub_clean.txt" --val_data_path "./data/wili-2018/x_val_sub_clean.txt" --val_label_path "./data/wili-2018/y_val_sub_clean.txt" --sequence_length 64
+
+
