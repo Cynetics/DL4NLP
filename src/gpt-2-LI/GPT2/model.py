@@ -9,6 +9,7 @@ import math
 import torch.nn as nn
 from torch.nn.parameter import Parameter
 
+
 class KL(nn.Module):
     def __init__(self, divisor=2):
         super().__init__()
@@ -35,7 +36,7 @@ class BayesianDropout(nn.Module):
 
         # init log_alpha params
         sd = 1. / torch.sqrt(torch.tensor(weight_dim).float())
-        self._log_alpha.data.uniform_(0, sd)
+        self._log_alpha.data.uniform_(-sd, sd)
 
     def forward(self, x, eval=False):
         # Gaussian prior
@@ -43,8 +44,8 @@ class BayesianDropout(nn.Module):
         noise = torch.randn(x.shape).to(torch.device('cuda' if self.cuda else "cpu")) + 1
 
         # max=1.0 corresponds with a dropout rate of 0.5 (section 3.3)
-        #self._log_alpha.data = torch.clamp(self._log_alpha.data, max=1.0)
         self._log_alpha.data = self._log_alpha.data.masked_fill(self._log_alpha.data > 1.0, 0)
+        self._log_alpha.data = self._log_alpha.data.masked_fill(self._log_alpha.data < -1.0, 0)
         noise *= torch.exp(self._log_alpha)
         return x * noise
 
