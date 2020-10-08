@@ -11,19 +11,12 @@ import seaborn as sns
 
 device = torch.device("cuda" if torch.cuda.is_available else "cpu")
 
-def write_results(results, result_name):
-    train_loss, val_loss, val_accuracy = results
-    with open("./logs/"+result_name+str(datetime.datetime.now())[4:16]+".csv", "w") as f:
-        for i in range(len(train_loss)):
-            f.write(str(train_loss[i])+","+ str(val_loss[i])+"," + str(val_accuracy[i])+"\n")
-
 def get_accuracy(outputs, labels):
     return torch.sum(outputs==labels).float()
 
 def get_paragraph_prediction(outputs, labels):
     unique_preds = torch.unique(outputs)
     counts = torch.tensor([(outputs==lang).float().sum() for lang in unique_preds])
-    #print("counts: ", counts)
     max_lang = unique_preds[torch.argmax(counts)]
     return max_lang
 
@@ -37,8 +30,6 @@ def get_entropy(outputs):
     probabilities = torch.tensor([1/235 for i in range(235)]).cuda()
     log_probs = torch.log(probabilities)
     entropy = -torch.sum(probabilities * log_probs)
-    print(entropy)
-    raise ValueError()
     return entropy, probabilities
 
 
@@ -52,7 +43,7 @@ def validate_paragraphs(model, validation_data, validation_loader, save_classifi
     accuracies = []
     with torch.no_grad():
         for i, (inputs, labels) in enumerate(validation_loader):
-            #print(inputs.shape, labels.shape)
+
             if inputs.shape[1] < 1: continue
 
             inputs = inputs.to(device).squeeze(0).long() #.cpu()
@@ -60,9 +51,9 @@ def validate_paragraphs(model, validation_data, validation_loader, save_classifi
             logits = model(inputs, True)
 
             probs = get_mean_softmax(logits)
-            #output = torch.argmax(logits,dim=1).view(-1)
+
             prediction = torch.argmax(probs)
-            #prediction = get_paragraph_prediction(output, labels)
+
 
             y_pred.append(prediction.item())
             y_true.append(labels[0].item())
@@ -76,19 +67,18 @@ def validate_paragraphs(model, validation_data, validation_loader, save_classifi
     print(accuracy)
     def rowIndex(row):return row.name
     if save_classification_report:
-        #target_names = validation_data.idx_to_lang
+
         df = pd.DataFrame(classification_report(y_true, y_pred,  output_dict=True)).transpose()
         df['lan_index'] = df.apply(rowIndex, axis=1) # for z in df.index]
         df['lan'] = df['lan_index'].map(lambda z:validation_data.idx_to_lang[int(z)] if len(z) < 4 else '')
         df.to_csv('classification_report_LSTM_deterministic_{}_{}_{}.csv'.format(config.batch_size, config.input, config.sequence_length), index= True)
-        #print(df)
+
     return accuracy
 
 
 def validate_uncertainty(model, validation_data, validation_loader, config=None, save_classification_report=True):
     n_batches = len(validation_loader)
     validation_data.predict_paragraph(True)
-    #model.eval()
     model = model #.cpu()
     y_pred = []; y_true = [];
     accuracies = []
@@ -125,19 +115,12 @@ def validate_uncertainty(model, validation_data, validation_loader, config=None,
                             str(std)+"\n")
 
             accuracies.append(correct)
-    #print(len(wrong_english_indices))
 
-    #with open("indices_fucked_test.txt", "w") as f:
-    #    np.savetxt(f, np.array(wrong_english_indices))
-
-    #with open ('confmatrix2.txt', 'w') as f:
-    #    np.savetxt(f, confusion_matrix(y_true, y_pred).astype(int), fmt='%i', delimiter=',')
     accuracy = round(np.sum(accuracies)/(n_batches),4)
 
     print(accuracy)
     def rowIndex(row):return row.name
     if save_classification_report:
-        #target_names = validation_data.idx_to_lang
         df = pd.DataFrame(classification_report(y_true, y_pred,  output_dict=True)).transpose()
         df['lan_index'] = df.apply(rowIndex, axis=1) # for z in df.index]
         df['lan'] = df['lan_index'].map(lambda z:validation_data.idx_to_lang[int(z)] if len(z) < 4 else '')

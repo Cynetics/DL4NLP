@@ -25,7 +25,6 @@ def predict(model, validation_loader, validation_data, config):
         accuracy = validate_uncertainty(model, validation_data, validation_loader, config=config)
         print("Validation Accuracy: {}".format(accuracy))
 
-    #write_results((avg_train_loss, val_loss, val_accuracy), model_type+"_")
     print("Iterators Done")
 
 def main():
@@ -34,8 +33,7 @@ def main():
     gpt_config = GPT2Config(vocab_size_or_config_json_file=param_config.input_dim, n_positions=param_config.sequence_length, n_ctx=param_config.sequence_length)
 
     model = GPT2LMHeadModel(gpt_config)
-    # Load Data
-    # Load Data
+
     if param_config.input == 'bytes':
         # Load Data for bytes
         _, validation_data = get_wili_data_bytes(param_config)

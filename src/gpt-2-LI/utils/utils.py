@@ -8,13 +8,11 @@ import pandas as pd
 device = torch.device("cuda" if torch.cuda.is_available else "cpu")
 
 def get_accuracy(outputs, labels):
-    return torch.sum(outputs==labels).float() #/ labels.shape[0]
+    return torch.sum(outputs==labels).float() 
 
 def get_paragraph_prediction(outputs, labels):
     unique_preds = torch.unique(outputs)
-    #print("unique_preds: ", unique_preds)
     counts = torch.tensor([(outputs==lang).float().sum() for lang in unique_preds])
-    #print("counts: ", counts)
     max_lang = unique_preds[torch.argmax(counts)]
     return max_lang
 
@@ -32,18 +30,12 @@ def validate_paragraphs(model, validation_data, validation_loader, save_classifi
     with torch.no_grad():
         for i, (inputs, labels) in enumerate(validation_loader):
             inputs = inputs.to(device).squeeze(0)
-            #print(inputs.shape)
             labels = labels.to(device).squeeze(0)
             logits = model(inputs, eval=True)
-            #output = torch.argmax(output,dim=1).view(-1)
-            #prediction = get_paragraph_prediction(output, labels)
             probs = get_mean_softmax(logits)
-            #output = torch.argmax(logits,dim=1).view(-1)
             prediction = torch.argmax(probs)
             y_pred.append(prediction.item()); y_true.append(labels[0].item());
             correct = (prediction == labels[0].item()).float()
-            #print("prediction: ", prediction, "label: ", labels[0].item())
-            #print(correct)
             accuracies.append(correct.item())
             print(i)
             if i == n_batches: break

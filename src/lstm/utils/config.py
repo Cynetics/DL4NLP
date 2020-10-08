@@ -28,12 +28,6 @@ def LSTM_config():
 
     args = parser.parse_args()
 
-    #if args.input == 'bytes':
-    #    args.data_path = "./data/wili-2018/x_bytes_train_sub.txt"
-    #    args.val_data_path = "./data/wili-2018/x_bytes_val_sub.txt"
-
-
-
     print(args)
     with open("config.txt", 'w') as file:
         file.write(str(args))

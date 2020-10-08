@@ -15,9 +15,9 @@ from utils.utils import validate_paragraphs
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def train(model, training_loader, validation_loader, validation_data, config, model_name=""):
+def train(model, training_loader, validation_loader, validation_data, config, model_name="LSTM"):
     model.train()
-    optimizer = optim.Adam(model.parameters(), lr=config.lr)
+    optimizer = optim.Adam(model.parameters(), lr=config.lr, weight_decay=1e-5)
     criterion = nn.CrossEntropyLoss()
     kl = KL(divisor=25)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.98)
@@ -32,17 +32,16 @@ def train(model, training_loader, validation_loader, validation_data, config, mo
             optimizer.zero_grad()
 
             output = model(inputs)
-            #log_alpha_1 = model._bayesian1._log_alpha
             log_alpha_2 = model._bayesian._log_alpha
-            #kl1 = kl(log_alpha_1)
+
             kl2 = kl(log_alpha_2)
             kl_divergence = kl2
 
             loss = criterion(output, labels)
-            #print("Loss: ", loss)
 
-            loss += kl_divergence #/ 5
-            #print("loss: ", loss)
+
+            loss += kl_divergence 
+
             loss.backward()
             optimizer.step()
             train_loss.append(loss.item())
@@ -53,15 +52,10 @@ def train(model, training_loader, validation_loader, validation_data, config, mo
                 avg_train_loss.append(avg)
                 print('Loss: %.3f' % avg)
                 print()
-                #accuracy = validate_paragraphs(model, validation_data, validation_loader, save_classification_report=False)
-                #print("Current Accuracy: {}, After {} iterations in Epoch {}".format(accuracy, i, epoch))
-                #model.train()
-                #torch.save(model.state_dict(), "./models/LSTM/"+model_name+str(epoch)+"_"+str(accuracy)+".pt")
 
         scheduler.step()
         torch.save(model.state_dict(), "./models/LSTM/"+model_name+str(epoch)+"_"+str(config.batch_size)+"_"+str(config.input)+"_"+str(config.sequence_length)+".pt")
-        #torch.save(model.state_dict(), "./models/LSTM/"+model_name+str(epoch)+"_"+str(accuracy)+".pt")
-    #write_results((avg_train_loss, val_loss, val_accuracy), model_type+"_")
+
     print("Iterators Done")
 
 def main():

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import torch
 import torch.nn as nn
-#from Embedding import Embedder
 
 class KL(nn.Module):
     def __init__(self, divisor=2):

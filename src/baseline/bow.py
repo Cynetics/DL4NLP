@@ -28,8 +28,8 @@ class Data():
         rd.Random(fixed_seed).shuffle(data)
         rd.Random(fixed_seed).shuffle(labels)
 
-        data_batches = self.grouper(data, 100)
-        labels_batches = self.grouper(labels, 100)
+        data_batches = self.grouper(data, 1024)
+        labels_batches = self.grouper(labels, 1024)
 
         self.data_batches = data_batches
         self.labels_batches = labels_batches
@@ -129,7 +129,7 @@ class LinearRegressionModel(torch.nn.Module):
 def train(data, model):
     model.train()
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(params=model.parameters())
+    optimizer = torch.optim.Adam(params=model.parameters(), weight_decay=1e-5)
 
     for epoch in range(100):
         running_loss = 0.0

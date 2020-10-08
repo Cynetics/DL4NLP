@@ -22,9 +22,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def KLD(model, kl):
     bayesian_modules = model.transformer.bayesian_layers
     log_alphas = [module._log_alpha for module in bayesian_modules]
-    #print(log_alphas)
     KLs = torch.tensor([kl(log_alpha) for log_alpha in log_alphas])
-    #print(KLs)
     KLs = KLs.sum()
     return KLs
 
@@ -34,7 +32,7 @@ def train(model, training_loader, validation_loader, validation_data, config):
     criterion = nn.CrossEntropyLoss()
     kl = KL(divisor=10)
 
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.98)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.98, weight_decay=1e-5)
     avg_train_loss = []
     train_loss = []
     accuracy = 0
@@ -47,7 +45,6 @@ def train(model, training_loader, validation_loader, validation_data, config):
 
             output = model(inputs)
             KL_loss = KLD(model, kl)
-            #print("KLD: ", KL_loss)
 
             loss = criterion(output, labels) + KL_loss
             loss.backward()
@@ -60,15 +57,10 @@ def train(model, training_loader, validation_loader, validation_data, config):
                 avg_train_loss.append(avg)
                 print('Loss: %.3f' % avg)
                 print()
-                #accuracy = validate_paragraphs(model, validation_data, validation_loader, save_classification_report=False)
-                #print("Current Accuracy: {}, After {} iterations in Epoch {}".format(accuracy, i, epoch))
-                #model.train()
-                #torch.save(model.state_dict(), "./models/gpt/"+str(epoch)+"_"+str(accuracy)+".pt")
-                #torch.save(model.state_dict(), "./models/gpt/"+str(epoch)+".pt")
 
         scheduler.step()
         torch.save(model.state_dict(), "./models/gpt/"+str(epoch)+"_"+str(config.batch_size)+"_"+str(config.input)+".pt")
-    #write_results((avg_train_loss, val_loss, val_accuracy), model_type+"_")
+
     print("Iterators Done")
 
 def main():

@@ -41,6 +41,3 @@ output_destination = args.dir_out + args.output
 with open(output_destination, "w") as outfile:
     json.dump(vocab, outfile)
 
-##### Example for loading vocabulary from file
-# with open('out/vocab.json') as json_file:
-#     data = Counter(json.load(json_file))
